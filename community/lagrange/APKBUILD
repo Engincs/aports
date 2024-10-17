@@ -1,7 +1,7 @@
 # Contributor: Michał Polański <michal@polanski.me>
 # Maintainer: mio <miyoyan@e.email>
 pkgname=lagrange
-pkgver=1.18.1
+pkgver=1.18.3
 pkgrel=0
 pkgdesc="Beautiful Gemini client"
 url="https://gmi.skyjake.fi/lagrange"
@@ -44,5 +44,5 @@ package() {
 }
 
 sha512sums="
-9b9415892d84df13247ac2a15f40f270172c3c18aeaa63d04efc596a5c30a51fe7b9c0a00448362a072843f217a427db289340e13752cb3979ad9ac28512ec83  lagrange-1.18.1.tar.gz
+07e58ecc1ec381ab3338a3a860484a61c95a110bc7ff28b9b2b522514adc35f1ccbe0d59709d34b3bcefbb528da10712ed6eb1cd36a5762ac9df98294df7abd1  lagrange-1.18.3.tar.gz
 "

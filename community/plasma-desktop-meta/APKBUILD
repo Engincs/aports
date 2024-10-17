@@ -1,10 +1,10 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
-# Maintainer: team/kde <bribbers@disroot.org>
 
 # The group tag is just to easily find this APKBUILD by some scripts for automation
 # group=kde-plasma
+maintainer="team/kde <bribbers@disroot.org>"
 pkgname=plasma-desktop-meta
-pkgver=6.2.0
+pkgver=6.2.1
 pkgrel=0
 pkgdesc="Plasma (Base) meta package"
 url="https://kde.org/plasma-desktop"
@@ -43,6 +43,7 @@ depends="
 	plasma-vault
 	plasma-workspace-wallpapers
 	polkit-kde-agent-1
+	power-profiles-daemon
 	powerdevil
 	print-manager
 	sddm-breeze

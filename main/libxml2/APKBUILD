@@ -2,7 +2,7 @@
 # Maintainer: Carlo Landmeter <clandmeter@alpinelinux.org>
 pkgname=libxml2
 pkgver=2.13.4
-pkgrel=0
+pkgrel=1
 pkgdesc="XML parsing library, version 2"
 url="https://gitlab.gnome.org/GNOME/libxml2"
 arch="all"
@@ -76,8 +76,10 @@ build() {
 		--mandir=/usr/share/man \
 		--infodir=/usr/share/info \
 		--enable-static \
+		--with-legacy \
 		--with-lzma \
 		--with-zlib \
+		--with-legacy \
 		$_py_configure
 	make
 }

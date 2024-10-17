@@ -1,0 +1,62 @@
+# Contributor: Zach DeCook <zachdecook@librem.one>
+maintainer="Zach DeCook <zachdecook@librem.one>"
+pkgname=hyprcursor
+pkgver=0.1.10
+pkgrel=0
+pkgdesc="The hyprland cursor format, library and utilities."
+url="https://github.com/hyprwm/Hyprcursor"
+arch="all"
+license="BSD-3-Clause"
+source="
+	https://github.com/hyprwm/Hyprcursor/archive/v$pkgver/Hyprcursor-v$pkgver.tar.gz
+	fix-tests-for-symlink.patch
+"
+makedepends="
+	cairo-dev
+	cmake
+	hyprlang
+	librsvg-dev
+	libzip-dev
+	tomlplusplus-dev
+	"
+checkdepends="adwaita-icon-theme xcur2png"
+subpackages="$pkgname-dev $pkgname-doc $pkgname-util"
+
+build() {
+	cmake -B build \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_INSTALL_LIBDIR=lib \
+		-DCMAKE_BUILD_TYPE=None
+	cmake --build build
+}
+
+check() {
+	cd build
+	# Create a hyprcursor, so that the tests will work
+	./hyprcursor-util -x /usr/share/icons/Adwaita/ -o ./
+	sed -i "s/name = .*/name = Adwaita/g" extracted_Adwaita/manifest.hl
+	# Put this in one of the paths it will search
+	mkdir -p ~/.local/share/icons/
+	./hyprcursor-util -c ./extracted_Adwaita -o ~/.local/share/icons/
+	# run the tests
+	LD_LIBRARY_PATH=./ CTEST_OUTPUT_ON_FAILURE=TRUE ctest
+	# 2/3 of the tests don't work.
+}
+
+package() {
+	DESTDIR="$pkgdir" cmake --install build
+	install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+	install -Dm644 -t "$pkgdir"/usr/share/doc/hyprcursor docs/*
+	install -Dm644 hyprcursor-util/README.md "$pkgdir"/usr/share/doc/hyprcursor/README.md
+}
+
+util() {
+	depends="xcur2png"
+	amove usr/bin/hyprcursor-util
+}
+
+
+sha512sums="
+7ce320f50af19e73e77dabef4840d6e8e6f56b2e505ff888dc0a14413110a30c8a3bfdc9bfc0d5458c9b387dabd9b4cbe35297209feffcfc622098af49044bb4  Hyprcursor-v0.1.10.tar.gz
+c605ebdf867c639a9a55926cf78c82be77b5247c3abc6171259e7bc948dd063a5d60ca77832df6d31487b7f4dc041932fef535ccfe62d7b6e57d5431b1124427  fix-tests-for-symlink.patch
+"

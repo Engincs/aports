@@ -2,7 +2,7 @@
 # Contributor: Timothy Legge <timlegge@gmail.com>
 # Maintainer: Timothy Legge <timlegge@gmail.com>
 pkgname=perl-cryptx
-pkgver=0.082
+pkgver=0.084
 pkgrel=0
 #_pkgreal is used by apkbuild-cpan to find modules at MetaCpan
 _pkgreal=CryptX
@@ -39,5 +39,5 @@ package() {
 }
 
 sha512sums="
-70b42717f4695ae77b5227b5e6a92d12d351796f06e36c38613020c2d9f0ebbc742ad3e258851ab65ad8d8b95e2d7b590b5a54c06755fec4c44b88a27f486590  CryptX-0.082.tar.gz
+c67c5b0aca1899155c37c3dbdb92249d1bc3e1781478a0aec3b3d4e01c70efd806bc325dc991462f9064ba0f18ec7c56c6d8383f068277ae1fc684cad88d4bd9  CryptX-0.084.tar.gz
 "

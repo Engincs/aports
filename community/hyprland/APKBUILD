@@ -1,0 +1,89 @@
+# Contributor: Zach DeCook <zachdecook@librem.one>
+maintainer="Zach DeCook <zachdecook@librem.one>"
+pkgname=hyprland
+pkgver=0.44.1
+pkgrel=0
+_commit="4520b30d498daca8079365bdb909a8dea38e8d55"
+pkgdesc="Independent, highly customizable, dynamic tiling Wayland compositor that doesn't sacrifice on its looks."
+url="https://hyprland.org"
+arch="all"
+license="BSD-3-Clause"
+source="
+	https://github.com/hyprwm/Hyprland/archive/v$pkgver/Hyprland-v$pkgver.tar.gz
+	"
+builddir="$srcdir/Hyprland-$pkgver"
+makedepends="
+	aquamarine-dev
+	cairo-dev
+	cmake
+	elogind-dev
+	hyprcursor-dev>=0.1.9
+	hyprland-protocols
+	hyprlang
+	hyprutils-dev>=0.2.3
+	hyprwayland-scanner
+	jq
+	libdrm-dev
+	libinput-dev
+	libliftoff-dev
+	libxcb-dev
+	libxcursor-dev
+	libxkbcommon-dev
+	mesa-dev
+	meson
+	ninja
+	pango-dev
+	pixman-dev
+	tomlplusplus-dev
+	udis86-git-dev
+	vulkan-loader-dev
+	wayland-dev
+	wayland-protocols
+	xcb-util-errors-dev
+	xcb-util-image-dev
+	xcb-util-renderutil-dev
+	xcb-util-wm-dev
+	xkeyboard-config-dev
+	xwayland-dev
+	"
+subpackages="
+	$pkgname-doc
+	$pkgname-dev
+	$pkgname-wallpapers::noarch
+	$pkgname-bash-completion
+	$pkgname-fish-completion
+	$pkgname-zsh-completion
+	"
+
+prepare() {
+	default_prepare
+	# Set some variables in version.h.in
+	sed -i "s/@HASH@/$_commit/" "$builddir"/src/version.h.in
+	sed -i "s/@BRANCH@/build-alpine/" "$builddir"/src/version.h.in
+	message="with patches: $(printf %s "$source" | grep '.patch$' | tr '\n' ' ')"
+	sed -i "s~@MESSAGE@~$message~" "$builddir"/src/version.h.in
+	sed -i "s/@TAG@/v$pkgver/" "$builddir"/src/version.h.in
+}
+
+build() {
+	abuild-meson . output
+	meson compile -C output
+}
+
+check() {
+	meson test --no-rebuild -C output
+}
+
+package() {
+	DESTDIR="$pkgdir" meson install --no-rebuild -C output
+}
+
+wallpapers() {
+	pkgdesc="Wallpapers for Hyprland"
+
+	amove usr/share/hypr/wall*.png
+}
+
+sha512sums="
+8546afcb697fd8bd6c3de504ebd58badb6dc445c1d46c9751c382bb06d043947134a7a619fd6984a9716ee46f86bda2b045dfbb700a683bf81b5ad72baba040e  Hyprland-v0.44.1.tar.gz
+"
